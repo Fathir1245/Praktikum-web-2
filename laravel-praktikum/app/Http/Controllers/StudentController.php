@@ -6,18 +6,23 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function index(): string
+    public function index()
     {
-        return 'Students data...';
+        return view('students.index');
     }
 
-    public function show(string $id): string
+    public function show(string $id)
     {
-        return 'Student ID: ' . $id;
+        return view('students.show');
     }
 
-    public function create(): string
+
+    public function create()
     {
-        return 'Create student data';
+        return view('students.create');
+    }
+
+    public function edit(string $id){
+        return view('students.edit');
     }
 }

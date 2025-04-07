@@ -1,35 +1,17 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\StudentController;
-use Illuminate\View\View;
 
-// Route ke halaman welcome
-Route::get('/', function (): View {
+Route::get('/', function () {
     return view('welcome');
 });
 
-// Route ke controller
-// Route::get('/students', [StudentController::class, 'index']);
-// Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-// Route::get('/students/{id}', [StudentController::class, 'show']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Basic route
-Route::get('/students', function (): string {
-    return 'Students data...';
-});
-
-// Redirect route
-Route::redirect('/redirect', '/students');
-
-// Named route
-Route::get('/students/create', function (): string {
-    return 'Create student data';
-})->name('students.create');
-
-// Route with parameter
-Route::get('/students/{id}', function ($id): string {
-    return 'Student ID: ' . $id;
-});
-
-
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+Route::get('/students/{id}', [StudentController::class, 'show'])->name('students.show');
+Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
