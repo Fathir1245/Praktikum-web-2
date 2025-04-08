@@ -16,7 +16,7 @@
 <body class="bg-zinc-100">
 
 <header x-data="{ open: false }">
-    <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-screen-2xl mx-auto">
         <div class="flex items-center justify-between sm:justify-start gap-8 bg-white border-b border-zinc-100 px-3 sm:px-6 py-4">
             <h2 class="text-xl text-left font-bold">Student Management</h2>
             <div class="hidden sm:block">
