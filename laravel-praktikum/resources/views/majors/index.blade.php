@@ -1,60 +1,60 @@
-<x-default-layout title="Major" section_title="Majors">
-    <div class="flex">
-        <a href="{{ route('majors.create') }}"
-            class="bg-green-50 text-green-500 border border-green-500 px-3 py-2 flex items-center gap-2">
-            <i class="ph ph-plus block text-green-500"></i>
-            <div>Add Major</div>
-        </a>
-    </div>
+<x-default-layout title="Majors" section_title="Majors List">
+    <div class="flex flex-col gap-4">
+        @if (session('success'))
+            <div class="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="col-span-3 sm:col-span-2 overflow-x-auto">
-        <table class="min-w-full bg-white shadow">
-            <thead>
-                <tr class="border-b border-zinc-200 text-sm leading-normal">
-                    <th class="py-3 px-6 text-left">#</th>
-                    <th class="py-3 px-6 text-left">Majors</th>
-                    <th class="py-3 px-6 text-center">Total Students</th>
-                    <th class="py-3 px-6 text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody class="text-zinc-700 text-sm font-light">
-                    <tr class="border-b border-zinc-200 hover:bg-zinc-100">
-                        <td class="py-3 px-6 text-left">1</td>
-                        <td class="py-3 px-6 text-left">Teknik Informatika</td>
-                        <td class="py-3 px-6 text-center">153</td>
-                        <td class="py-3 px-6 text-center">
-                            <a href="{{ route('majors.detail', 1) }}"
-                                class="bg-blue-50 border border-blue-500 p-2 inline-block">
-                                <i class="ph ph-eye block text-blue-500"></i>
-                            </a>
-                            <a href="{{ route('majors.update', 1) }}"
-                                class="bg-yellow-50 border border-yellow-500 p-2 inline-block">
-                                <i class="ph ph-note-pencil block text-yellow-500"></i>
-                            </a>
-                            <button class="bg-red-50 border border-red-500 p-2">
-                                <i class="ph ph-trash-simple block text-red-500"></i>
-                            </button>
-                        </td>
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold">All Majors</h2>
+            <a href="{{ route('majors.create') }}" class="bg-blue-50 border border-blue-500 text-blue-500 px-3 py-2 flex items-center gap-2 cursor-pointer">
+                <i class="ph ph-plus block text-blue-500"></i>
+                <span>Add New Major</span>
+            </a>
+        </div>
+
+        <div class="bg-white border border-zinc-100 shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-zinc-200">
+                <thead class="bg-zinc-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Code</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Total Students</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Actions</th>
                     </tr>
-                    {{-- <tr class="border-b border-zinc-200 hover:bg-zinc-100">
-                        <td class="py-3 px-6 text-left">2</td>
-                        <td class="py-3 px-6 text-left">Sistem Informasi Informatika</td>
-                        <td class="py-3 px-6 text-center">124</td>
-                        <td class="py-3 px-6 text-center">
-                            <a href="{{ route('majors.detail', 1) }}"
-                                class="bg-blue-50 border border-blue-500 p-2 inline-block">
-                                <i class="ph ph-eye block text-blue-500"></i>
-                            </a>
-                            <a href="{{ route('majors.update', 1) }}"
-                                class="bg-yellow-50 border border-yellow-500 p-2 inline-block">
-                                <i class="ph ph-note-pencil block text-yellow-500"></i>
-                            </a>
-                            <button class="bg-red-50 border border-red-500 p-2">
-                                <i class="ph ph-trash-simple block text-red-500"></i>
-                            </button>
-                        </td>
-                    </tr> --}}
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bg-white divide-y divide-zinc-200">
+                    @forelse ($majors as $major)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $major->code }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $major->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $major->total_students }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex gap-2">
+                                    <a href="{{ route('majors.detail', $major->id) }}" class="text-blue-600 hover:text-blue-900">
+                                        <i class="ph ph-eye"></i>
+                                    </a>
+                                    <a href="{{ route('majors.edit', $major->id) }}" class="text-yellow-600 hover:text-yellow-900">
+                                        <i class="ph ph-pencil"></i>
+                                    </a>
+                                    <form action="{{ route('majors.destroy', $major->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this major?')">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-zinc-500">No majors found</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </x-default-layout>
